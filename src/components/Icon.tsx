@@ -9,32 +9,29 @@ import {
 } from 'react-icons/si/index.js'
 
 type Props = {
-  name: string
   className?: string
   style?: React.CSSProperties
 }
 
-type LogoProps = Omot<Props, name>
-
-export const LogoGitHub = ({ className, props }: LogoProps) => {
+const GitHub = ({ className, ...props }: Props) => {
   return (
     <SiGithub color="#ffffff" className={setClassName(className)} {...props} />
   )
 }
 
-export const LogoInstagram = (props?: LogoProps) => {
+const Instagram = (props?: Props) => {
   return <LogoImage name="icon_instagram.png" {...props} />
 }
 
-export const LogoMastodon = (props?: LogoProps) => {
+const Mastodon = (props?: Props) => {
   return <LogoImage name="icon_mastodon.svg" {...props} />
 }
 
-export const LogoMisskey = (props?: LogoProps) => {
+const Misskey = (props?: Props) => {
   return <LogoImage name="icon_misskey.png" {...props} />
 }
 
-export const LogoNicovideo = ({ className, props }: LogoProps) => {
+const Nicovideo = ({ className, ...props }: Props) => {
   return (
     <SiNiconico
       color="#ffffff"
@@ -44,41 +41,41 @@ export const LogoNicovideo = ({ className, props }: LogoProps) => {
   )
 }
 
-export const LogoPatreon = ({ className, props }: LogoProps) => {
+const Patreon = ({ className, ...props }: Props) => {
   return (
     <SiPatreon color="#ff424d" className={setClassName(className)} {...props} />
   )
 }
 
-export const LogoPixiv = (props?: LogoProps) => {
+const Pixiv = (props?: Props) => {
   return <LogoImage name="icon_pixiv.png" {...props} />
 }
 
-export const LogoRakuten = ({ className, props }: LogoProps) => {
+const Rakuten = ({ className, ...props }: Props) => {
   return (
     <SiRakuten color="#bf0000" className={setClassName(className)} {...props} />
   )
 }
 
-export const LogoSkeb = (props?: LogoProps) => {
+const Skeb = (props?: Props) => {
   return <LogoImage name="icon_skeb.svg" {...props} />
 }
 
-export const LogoTwitter = ({ className, props }: LogoProps) => {
+const Twitter = ({ className, ...props }: Props) => {
   return (
     <SiTwitter color="#1d9bf0" className={setClassName(className)} {...props} />
   )
 }
 
-export const LogoWavebox = (props?: LogoProps) => {
+const Wavebox = (props?: Props) => {
   return <LogoImage name="icon_wavebox.png" {...props} />
 }
 
-export const LogoYouTube = (props?: LogoProps) => {
+const YouTube = (props?: Props) => {
   return <LogoImage name="icon_youtube.svg" {...props} />
 }
 
-const LogoImage = ({ name, ...props }?: Props) => {
+const LogoImage = ({ name, className, style }?: Props & { name: string }) => {
   if (!name) {
     throw new Error('ロゴ名を指定してください')
   }
@@ -87,8 +84,8 @@ const LogoImage = ({ name, ...props }?: Props) => {
     <img
       src={`/${name}`}
       alt=""
-      className={clsx('aspect-square object-contain', props?.className)}
-      style={props?.style}
+      className={clsx('aspect-square object-contain', className)}
+      style={style}
     />
   )
 }
@@ -107,31 +104,31 @@ export const Logo = ({ url, ...props }?: { url: string } & LogoProps) => {
   }
 
   if (/github/.test(url)) {
-    return <LogoGitHub {...props} />
+    return <GitHub {...props} />
   } else if (/instagram/.test(url)) {
-    return <LogoInstagram {...props} />
+    return <Instagram {...props} />
   } else if (
     /(mastodon|mstdn\.jp|pawoo\.net|fedibird\.com|donshare\.net)/.test(url)
   ) {
-    return <LogoMastodon {...props} />
+    return <Mastodon {...props} />
   } else if (/(misskey|nijimiss\.moe|sushi\.ski|trpger\.us)/.test(url)) {
-    return <LogoMisskey {...props} />
+    return <Misskey {...props} />
   } else if (/nicovideo/.test(url)) {
-    return <LogoNicovideo {...props} />
+    return <Nicovideo {...props} />
   } else if (/patreon/.test(url)) {
-    return <LogoPatreon {...props} />
+    return <Patreon {...props} />
   } else if (/pixiv/.test(url)) {
-    return <LogoPixiv {...props} />
+    return <Pixiv {...props} />
   } else if (/rakuten/.test(url)) {
-    return <LogoRakuten {...props} />
+    return <Rakuten {...props} />
   } else if (/skeb/.test(url)) {
-    return <LogoSkeb {...props} />
+    return <Skeb {...props} />
   } else if (/twitter/.test(url)) {
-    return <LogoTwitter {...props} />
+    return <Twitter {...props} />
   } else if (/wavebox/.test(url)) {
-    return <LogoWavebox {...props} />
+    return <Wavebox {...props} />
   } else if (/youtube/.test(url)) {
-    return <LogoYouTube {...props} />
+    return <YouTube {...props} />
   } else {
     return (
       <FaExternalLinkAlt
