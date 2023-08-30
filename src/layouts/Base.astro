@@ -25,8 +25,9 @@ const { title, description, ogp }: PageProps = Astro.props
             type: 'website',
             image: import.meta.env.OGP_IMAGE_PATH
               ? new URL(
-                  import.meta.env.OGP_IMAGE_PATH,
-                  import.meta.env.SITE_URL
+                  import.meta.env.BASE_URL +
+                    import.meta.env.OGP_IMAGE_PATH.replace(/^\//, ''),
+                  Astro.site
                 ).toString()
               : config.siteMetadata.cover
               ? `${config.siteMetadata.cover?.url}?w=1200&h=630&fit=crop`
@@ -59,10 +60,7 @@ const { title, description, ogp }: PageProps = Astro.props
             });`}>
           </div>
           <a
-            href={new URL(
-              import.meta.env.BASE_URL,
-              import.meta.env.SITE_URL
-            ).toString()}
+            href={new URL(import.meta.env.BASE_URL, Astro.url).toString()}
             class="w-1/4 max-w-[150px] -translate-y-1/2 overflow-hidden rounded-full border-4 border-body-base">
             {
               config.siteMetadata.avatar ? (
