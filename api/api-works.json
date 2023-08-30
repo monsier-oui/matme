@@ -1,0 +1,20 @@
+{
+  "apiFields": [
+    {
+      "idValue": "mmk1LA-gTO",
+      "fieldId": "title",
+      "name": "タイトル",
+      "kind": "text"
+    },
+    {
+      "fieldId": "images",
+      "name": "画像",
+      "kind": "mediaList",
+      "required": true
+    },
+    { "fieldId": "caption", "name": "キャプション", "kind": "richEditorV2" },
+    { "fieldId": "nsfw", "name": "NSFW", "kind": "boolean" },
+    { "fieldId": "tags", "name": "タグ", "kind": "relationList" }
+  ],
+  "customFields": []
+}
