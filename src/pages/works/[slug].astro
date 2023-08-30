@@ -28,7 +28,7 @@ const props: PageProps = {
   description: work.caption.replace(/<([^>]+)>/g, ''),
   ogp: {
     type: 'article',
-    image: getThumbnail({ work }),
+    image: getThumbnail({ work, width: 1200, height: 630 }),
   },
 }
 ---

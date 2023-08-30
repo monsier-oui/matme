@@ -35,7 +35,7 @@ sections = sections.filter(({ works }: Section) => works.length > 0)
               {section.works.map((work: Work) => (
                 <li class="">
                   <a href={`/works/${work.id}`} title={work.title}>
-                    <img src={getThumbnail({ work, size: 200 })} alt="" />
+                    <img src={getThumbnail({ work, width: 200 })} alt="" />
                   </a>
                 </li>
               ))}

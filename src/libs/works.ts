@@ -61,18 +61,20 @@ export const getWork = async (
 
 export const getThumbnail = ({
   work,
-  size,
+  height,
+  width,
 }: {
   work: Work
-  size?: number
+  height?: number
+  width?: number
 }): string => {
   if (work.images.length === 0) return ''
 
   const params = {}
 
-  if (size) {
-    params['w'] = size
-    params['h'] = size
+  if (width) {
+    params['w'] = width
+    params['h'] = height ? height : width
     params['fit'] = 'crop'
   }
 

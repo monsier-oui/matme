@@ -23,7 +23,14 @@ const { title, description, ogp }: PageProps = Astro.props
           {
             title: title || config.siteMetadata.name,
             type: 'website',
-            image: new URL('/ogp.png', import.meta.env.SITE_URL).toString(),
+            image: import.meta.env.OGP_IMAGE_PATH
+              ? new URL(
+                  import.meta.env.OGP_IMAGE_PATH,
+                  import.meta.env.SITE_URL
+                ).toString()
+              : config.siteMetadata.cover
+              ? `${config.siteMetadata.cover?.url}?w=1200&h=630&fit=crop`
+              : '',
           },
           ogp || {}
         ),
