@@ -1,0 +1,92 @@
+---
+import dayjs from 'dayjs'
+import { FiShare } from 'react-icons/fi/index'
+
+import { Logo } from '@/components/Icon'
+import Lightbox from '@/components/Lightbox'
+import type { PageProps } from '@/env'
+import Layout from '@/layouts/Base.astro'
+import { getAllWorks, getThumbnail } from '@/libs/works'
+import type { Work } from '@/libs/works'
+
+export async function getStaticPaths() {
+  const works: Work[] = await getAllWorks()
+
+  return works.map((work: Work) => ({
+    params: {
+      slug: work.id,
+    },
+    props: {
+      work,
+    },
+  }))
+}
+
+const { work } = Astro.props
+const props: PageProps = {
+  title: work.title,
+  description: work.caption.replace(/<([^>]+)>/g, ''),
+  ogp: {
+    type: 'article',
+    image: getThumbnail({ work }),
+  },
+}
+---
+
+<Layout {...props}>
+  <article class="article mt-10">
+    <Lightbox images={work.images} containerMaxWidth="1536" client:visible />
+
+    <footer class="mt-8">
+      <h1 class="text-2xl font-bold">{work.title}</h1>
+      <div class="prose mt-6 prose-p:my-2">
+        <Fragment set:html={work.caption} />
+      </div>
+      <time
+        class="mt-2 block text-sm text-neutral-500"
+        title={work.publishedAt}>
+        {dayjs(work.publishedAt).format('YYYY年M月D日 H:mm')}
+      </time>
+
+      <div class="mt-6 flex items-center justify-center md:justify-end">
+        <span class="mr-4 flex items-center gap-1">
+          <FiShare className="inline-block h-4 w-4" />
+          <span class="hidden text-sm md:block">共有する</span>
+        </span>
+        <ul class="flex flex-wrap items-center gap-2">
+          {
+            [
+              {
+                href: `https://twitter.com/intent/tweet?text=${work.title}&url=${Astro.url}`,
+                title: 'Twitterへシェア',
+              },
+              {
+                href: `https://donshare.net/share.html?text=${work.title}&url=${Astro.url}`,
+                title: 'Mastodonへシェア',
+              },
+              {
+                href: `https://misskeyshare.link/share.html?text=${work.title}&url=${Astro.url}`,
+                title: 'Misskeyへシェア',
+              },
+              {
+                href: `https://wavebox.me/wave/4awmzni64mnh2vs4/`,
+                title: 'Waveboxで絵文字やメッセージを送る',
+              },
+            ].map(({ href, title }) => (
+              <li>
+                <a
+                  href={href}
+                  title={title}
+                  target="_blank"
+                  rel="noreferrer noopener"
+                  class="block rounded-md bg-white p-3 transition-colors hover:bg-neutral-200">
+                  <Logo url={href} className="h-6" />
+                </a>
+              </li>
+            ))
+          }
+        </ul>
+      </div>
+    </footer>
+  </article>
+</Layout>

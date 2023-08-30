@@ -1,15 +1,47 @@
 ---
+import Layout from '@/layouts/Base.astro'
+import { getTags } from '@/libs/tags'
+import type { Tag } from '@/libs/tags'
+import { getAllWorks, getThumbnail } from '@/libs/works'
+import type { Work } from '@/libs/works'
+
+interface Section {
+  tag: Tag
+  works: Work[]
+}
+
+const tags: Tag[] = await getTags()
+let sections: Section[] = await Promise.all(
+  tags.map(async (tag) => {
+    const works = await getAllWorks({ filters: `tags[contains]${tag.id}` })
+
+    return {
+      tag,
+      works,
+    }
+  })
+)
+sections = sections.filter(({ works }: Section) => works.length > 0)
 ---
 
-<html lang="en">
-	<head>
-		<meta charset="utf-8" />
-		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-		<meta name="viewport" content="width=device-width" />
-		<meta name="generator" content={Astro.generator} />
-		<title>Astro</title>
-	</head>
-	<body>
-		<h1>Astro</h1>
-	</body>
-</html>
+<Layout title="">
+  <section class="section">
+    {
+      sections &&
+        sections.map((section: Section) => (
+          <section class="">
+            <h2 class="mt-10 text-xl font-bold">{section.tag.name}</h2>
+            <ul class="mt-4 grid grid-cols-4 gap-2 md:grid-cols-6 lg:grid-cols-8">
+              {section.works.map((work: Work) => (
+                <li class="">
+                  <a href={`/works/${work.id}`} title={work.title}>
+                    <img src={getThumbnail({ work, size: 200 })} alt="" />
+                  </a>
+                </li>
+              ))}
+            </ul>
+          </section>
+        ))
+    }
+  </section>
+</Layout>

@@ -1,0 +1,101 @@
+---
+import { SEO } from 'astro-seo'
+
+import Social from '@/components/Social.astro'
+import config from '@/config'
+import type { PageProps } from '@/env'
+
+import '@/styles/global.css'
+
+const { title, description, ogp }: PageProps = Astro.props
+---
+
+<!DOCTYPE html>
+<html lang="ja">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width" />
+    <SEO
+      title={`${title ? `${title} | ` : ''}${config.siteMetadata.name}`}
+      description={description || config.siteMetadata.description}
+      openGraph={{
+        basic: Object.assign(
+          {
+            title: title || config.siteMetadata.name,
+            type: 'website',
+            image: new URL('/ogp.png', import.meta.env.SITE_URL).toString(),
+          },
+          ogp || {}
+        ),
+        optional: {
+          description: description || config.siteMetadata.description,
+          siteName: config.siteMetadata.name,
+        },
+        image: {
+          alt: title || config.siteMetadata.name,
+        },
+      }}
+      twitter={{
+        card: 'summary_large_image',
+      }}
+    />
+  </head>
+  <body class="bg-neutral-300">
+    <div class="container">
+      <div
+        class="my-10 overflow-hidden rounded-md bg-body-base pb-10 text-body-text shadow-sm md:rounded-xl">
+        <header class="relative flex flex-col items-center">
+          <div
+            class="aspect-video w-full bg-primary-300 bg-cover bg-center md:aspect-[3/1]"
+            style={`background-image: url(${
+              config.siteMetadata.cover ? config.siteMetadata.cover?.url : ''
+            });`}>
+          </div>
+          <a
+            href={new URL(
+              import.meta.env.BASE_URL,
+              import.meta.env.SITE_URL
+            ).toString()}
+            class="w-1/4 max-w-[150px] -translate-y-1/2 overflow-hidden rounded-full border-4 border-body-base">
+            {
+              config.siteMetadata.avatar ? (
+                <img
+                  src={config.siteMetadata.avatar.url}
+                  alt="avatar"
+                  class="aspect-square"
+                  width="300"
+                  height="300"
+                />
+              ) : (
+                <span class="block aspect-square bg-primary-600" />
+              )
+            }
+          </a>
+
+          {
+            Astro.url.pathname === '/' && (
+              <Fragment>
+                <h1 class="text-xl font-bold">{config.siteMetadata.name}</h1>
+                <p
+                  class="mx-auto mt-8 max-w-xl px-4"
+                  set:html={config.siteMetadata.description.replace(
+                    /\n/g,
+                    '<br/>'
+                  )}
+                />
+              </Fragment>
+            )
+          }
+        </header>
+
+        <slot />
+      </div>
+    </div>
+    <footer class="bg-body-text py-10 text-body-base">
+      <div class="container text-center">
+        <Social />
+        <small class="mt-8 block text-sm">©{config.siteMetadata.name}</small>
+      </div>
+    </footer>
+  </body>
+</html>
