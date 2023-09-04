@@ -1,11 +1,14 @@
 ---
 import { Logo } from '@/components/Icon'
-import config from '@/config'
+import type { Settings } from '@/env.d'
+
+const settings: Settings =
+  process.env.settings && JSON.parse(JSON.stringify(process.env.settings))
 ---
 
 <ul class="flex flex-wrap items-center justify-center gap-3">
   {
-    config.social.map(
+    settings?.social.map(
       ({
         title,
         href,
