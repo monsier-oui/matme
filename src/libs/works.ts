@@ -17,32 +17,16 @@ export type Work = {
   MicroCMSDate
 
 // 投稿を全て取得
-export const getAllWorks = async (
-  queries?: MicroCMSQueries,
-  limit = 10,
-  offset = 0
-): Work[] => {
-  const response = await client.getList({
+export const getAllWorks = async (queries?: MicroCMSQueries): Work[] => {
+  const response = await client.getAllContents({
     endpoint: 'works',
     queries: {
       orders: '-publishedAt',
       ...queries,
-      offset,
-      limit,
     },
   })
 
-  if (response.offset + response.limit < response.totalCount) {
-    const contents = await getAllWorks(
-      queries,
-      response.limit,
-      response.offset + response.limit
-    )
-
-    return [...response.contents, ...contents]
-  }
-
-  return response.contents
+  return response
 }
 
 // 投稿を1つ取得
